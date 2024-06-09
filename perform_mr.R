@@ -1,10 +1,12 @@
 perform_mr <- function(exposure_data, outcome_data){
+  # Extract the name and ID of exposure and outcome data
   exposure <- exposure_data$exposure[1]
   id.exposure <- exposure_data$id.exposure[1]
   outcome <- outcome_data$outcome[1]
   id.outcome <- outcome_data$id.outcome[1]
-  res_str <- "-"
-  res_df <- data.frame(
+  # Set up strings and dataframes for storing the result information
+  res_str <- "-" # A string used to indicate whether there is a positive result, with the content being '+' or '-'
+  res_df <- data.frame( # A dataframe used to store the result
     Exposure = exposure,
     Exposure_ID = id.exposure,
     Outcome = outcome,
@@ -32,7 +34,7 @@ perform_mr <- function(exposure_data, outcome_data){
     MR_Presso.Global_Test.RSSobs = NA,
     MR_Presso.Global_Test.Pval = NA
   )
-  run_df <- data.frame(
+  run_df <- data.frame( # A dataframe used to store the situation of analysis
     Exposure = exposure,
     Exposure_ID = id.exposure,
     Outcome = outcome,
