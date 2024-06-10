@@ -1,3 +1,5 @@
+library(TwoSampleMR)
+
 perform_mr <- function(exposure_data, outcome_data){
   # Extract the name and ID of exposure and outcome data
   exposure <- exposure_data$exposure[1]
