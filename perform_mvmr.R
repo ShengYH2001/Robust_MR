@@ -1,4 +1,11 @@
-library(TwoSampleMR)
+install.packages("MendelianRandomization")
+install.packages("remotes")
+library(remotes)
+remotes::install_github('MRCIEU/TwoSampleMR')
+remotes::install_github("WSpiller/MVMR", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
+remotes::install_github("WSpiller/RMVMR", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
+
+library(TwoSampleMR) 
 library(MVMR)
 library(RMVMR)
 library(MendelianRandomization)
