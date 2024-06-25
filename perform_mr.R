@@ -1,14 +1,12 @@
 library(TwoSampleMR)
 
 perform_mr <- function(exposure_data, outcome_data){
-  # Extract the name and ID of exposure and outcome data
   exposure <- exposure_data$exposure[1]
   id.exposure <- exposure_data$id.exposure[1]
   outcome <- outcome_data$outcome[1]
   id.outcome <- outcome_data$id.outcome[1]
-  # Set up strings and dataframes for storing the result information
-  res_str <- "-" # A string used to indicate whether there is a positive result, with the content being '+' or '-'
-  res_df <- data.frame( # A dataframe used to store the result
+  res_str <- "-"
+  res_df <- data.frame(
     Exposure = exposure,
     Exposure_ID = id.exposure,
     Outcome = outcome,
@@ -36,7 +34,7 @@ perform_mr <- function(exposure_data, outcome_data){
     MR_Presso.Global_Test.RSSobs = NA,
     MR_Presso.Global_Test.Pval = NA
   )
-  run_df <- data.frame( # A dataframe used to store the situation of analysis
+  run_df <- data.frame(
     Exposure = exposure,
     Exposure_ID = id.exposure,
     Outcome = outcome,
@@ -49,9 +47,6 @@ perform_mr <- function(exposure_data, outcome_data){
     write.table(snp_output, file="./result/table.SNP.csv", col.names =!file.exists("./result/table.SNP.csv"), row.names=F, sep=',', append = T)
     # Harmonise data
     har_data <- harmonise_data(exposure_dat = exposure_data, outcome_dat = outcome_data)
-    # Save information of SNP harmonised
-    har_data_output <- har_data[,c("exposure","id.exposure","SNP","chr.exposure","pos.exposure","effect_allele.exposure","other_allele.exposure","beta.exposure","eaf.exposure","se.exposure","pval.exposure","samplesize.exposure","rsq.exposure","F")]
-    write.table(har_data_output, file="./result/table.SNP_Harmonise.csv", col.names = !file.exists("./result/table.SNP_Harmonise.csv"), row.names=F, sep=',', append = T)
     # Perform MR analysis and estimate 95% CI
     res <- mr(har_data, method_list = c('mr_wald_ratio','mr_egger_regression','mr_weighted_median','mr_ivw','mr_ivw_mre','mr_simple_mode','mr_weighted_mode'))
     odds <- generate_odds_ratios(res)
@@ -68,6 +63,10 @@ perform_mr <- function(exposure_data, outcome_data){
     res_df$Wald_Ratio.Pval = ifelse(length(odds[odds$method == "Wald ratio", ]$pval) == 0, "NA", odds[odds$method == "Wald ratio", ]$pval)
     if (res_df$IVW.Pval != "NA" & res_df$IVW.Pval < 0.05) {res_df$MR_Result <- 1; res_str <- "+"}
     if (res_df$Wald_Ratio.Pval != "NA" & res_df$Wald_Ratio.Pval < 0.05) {res_df$MR_Result <- 1; res_str <- "+"}
+    # Save information of SNP harmonized
+    har_data_output <- har_data[,c("exposure","id.exposure","outcome","id.outcome","SNP","chr.exposure","pos.exposure","effect_allele.exposure","other_allele.exposure","beta.exposure","eaf.exposure","se.exposure","pval.exposure","samplesize.exposure","rsq.exposure","F")]
+    har_data_output$MR_Result <- res_str
+    write.table(har_data_output, file="./result/table.SNP_Harmonise.csv", col.names = !file.exists("./result/table.SNP_Harmonise.csv"), row.names=F, sep=',', append = T)
     # Save all OR results of each method of MR analysis
     odds_df <- odds[,c("exposure","id.exposure","outcome","id.outcome","nsnp","method","or","or_lci95","or_uci95","or_ci95","pval","b","se","lo_ci","up_ci")]
     colnames(odds_df) <- c('Exposure','Exposure_ID','Outcome','Outcome_ID','nSNP','Method','OR','OR.Low_CI95','OR.Up_CI95','OR_CI95','Pval','Beta','SE','Low_CI','Up_CI')
