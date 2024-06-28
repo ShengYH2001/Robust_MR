@@ -8,4 +8,5 @@ This R function, perform_mr, is designed to conduct Mendelian Randomization (MR)
 6. Heterogeneity and Pleiotropy Tests: Conducts tests for heterogeneity and pleiotropy to assess the robustness of the MR findings.
 7. MR-PRESSO Sensitivity Analysis: Applies the MR-PRESSO method for sensitivity analysis to detect potential outliers or data manipulation.
 8. Data Saving: Stores information about SNPs, harmonized data, MR analysis results, graphical outputs, and the status of the run in CSV files.
-This function
+This function require exposure_data and outcome_data derived from function format(), example:
+perform_mr(exposure_data, outcome_data)
