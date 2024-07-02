@@ -64,7 +64,7 @@ perform_mr <- function(exposure_data, outcome_data){
     if (res_df$IVW.Pval != "NA" & res_df$IVW.Pval < 0.05) {res_df$MR_Result <- 1; res_str <- "+"}
     if (res_df$Wald_Ratio.Pval != "NA" & res_df$Wald_Ratio.Pval < 0.05) {res_df$MR_Result <- 1; res_str <- "+"}
     # Save information of SNP harmonized
-    har_data_output <- har_data[,c("exposure","id.exposure","outcome","id.outcome","SNP","chr.exposure","pos.exposure","effect_allele.exposure","other_allele.exposure","beta.exposure","eaf.exposure","se.exposure","pval.exposure","samplesize.exposure","rsq.exposure","F")]
+    har_data_output <- har_data[which(har_data$mr_keep==TRUE),c("exposure","id.exposure","outcome","id.outcome","SNP","chr.exposure","pos.exposure","effect_allele.exposure","other_allele.exposure","beta.exposure","eaf.exposure","se.exposure","pval.exposure","samplesize.exposure","rsq.exposure","F")]
     har_data_output$MR_Result <- res_str
     write.table(har_data_output, file="./result/table.SNP_Harmonise.csv", col.names = !file.exists("./result/table.SNP_Harmonise.csv"), row.names=F, sep=',', append = T)
     # Save all OR results of each method of MR analysis
